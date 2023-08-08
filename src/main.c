@@ -14,9 +14,6 @@ void main()
 	FILE *passFILE = NULL;
 	FILE *descFILE = NULL;
 	FILE *masterFILE = NULL;
-	FILE *keypassFILE = NULL;
-	FILE *keydescFILE = NULL;
-	FILE *keymasterFILE = NULL;
 
 	//Check if it's the first launch on the computer
 	firstinit = initcheck();
@@ -29,20 +26,13 @@ void main()
 		descFILE = fopen("UserData/desc.txt", "r");
 		passFILE = fopen("UserData/pass.txt", "r");
 		masterFILE = fopen("UserData/masterpass.txt", "r");
-		keydescFILE = fopen("UserData/keydesc.txt", "r");
-		keypassFILE = fopen("UserData/keypass.txt", "r");
-		keymasterFILE = fopen("UserData/keymaster.txt", "r");
 
-		decryption(nblines, &keypassFILE, &passFILE);
+		decryption(nblines,&passFILE);
 		renameFILE(1);
-		decryption(nblines, &keydescFILE, &descFILE);
+		decryption(nblines,&descFILE);
 		renameFILE(2);
-		decryption(nblines, &keymasterFILE, &masterFILE);
+		decryption(nblines,&masterFILE);
 		renameFILE(3);
-
-		remove("UserData/keydesc.txt");
-		remove("UserData/keypass.txt");
-		remove("UserData/keymaster.txt");
 	}
 
 	masterpass(firstinit);
@@ -75,14 +65,11 @@ void main()
 	descFILE = fopen("UserData/desc.txt", "r");
 	passFILE = fopen("UserData/pass.txt", "r");
 	masterFILE = fopen("UserData/masterpass.txt","r");
-	keydescFILE = fopen("UserData/keydesc.txt", "a+");
-	keypassFILE = fopen("UserData/keypass.txt", "a+");
-	keymasterFILE = fopen("UserData/keymaster.txt", "a+");
 
-	encryption(nblines, &keypassFILE, &passFILE);
+	encryption(nblines,&passFILE);
 	renameFILE(1);	
-	encryption(nblines, &keydescFILE, &descFILE);
+	encryption(nblines, &descFILE);
 	renameFILE(2);
-	encryption(nblines, &keymasterFILE, &masterFILE);
+	encryption(nblines, &masterFILE);
 	renameFILE(3);
 }

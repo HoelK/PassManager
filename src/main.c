@@ -18,24 +18,30 @@ void main()
 	//Check if it's the first launch on the computer
 	firstinit = initcheck();
 
-	//If not the first launch : decrypt all files
+	//If not first init, decrypt masterpass file to read it
 	if(!firstinit)
 	{
 		nblines = countline();
 	
-		descFILE = fopen("UserData/desc.txt", "r");
-		passFILE = fopen("UserData/pass.txt", "r");
 		masterFILE = fopen("UserData/masterpass.txt", "r");
 
-		decryption(nblines,&passFILE);
-		renameFILE(1);
-		decryption(nblines,&descFILE);
-		renameFILE(2);
-		decryption(nblines,&masterFILE);
+		decryption(nblines, &masterFILE);
 		renameFILE(3);
 	}
 
 	masterpass(firstinit);
+
+	//If not the first launch : decrypt all files
+	if(!firstinit)
+	{
+		descFILE = fopen("UserData/desc.txt", "r");
+		passFILE = fopen("UserData/pass.txt", "r");
+
+		decryption(nblines, &passFILE);
+		renameFILE(1);
+		decryption(nblines, &descFILE);
+		renameFILE(2);
+	}
 
 	//User Interface
 	do
@@ -66,7 +72,7 @@ void main()
 	passFILE = fopen("UserData/pass.txt", "r");
 	masterFILE = fopen("UserData/masterpass.txt","r");
 
-	encryption(nblines,&passFILE);
+	encryption(nblines, &passFILE);
 	renameFILE(1);	
 	encryption(nblines, &descFILE);
 	renameFILE(2);

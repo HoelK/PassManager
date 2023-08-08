@@ -28,6 +28,7 @@ void encryption(int nblines, FILE **FileToEncrypt) //Encrypt the file entered in
 				linetocrypt[i] = key[i] + linetocrypt[i];
 		}
 
+		//Creating the array that contain the line and the key
 		for(int i = 0; i < (strlen(linetocrypt)*2) - 2; i++)
 		{
 			if(i % 2 == 0)
@@ -41,10 +42,12 @@ void encryption(int nblines, FILE **FileToEncrypt) //Encrypt the file entered in
 				keycount++;
 			}
 		}
-		//Re-writing the file and writing the key
-		fprintf(tempFILE, "%s\n", cryptedline);
+		//Resetting the counts for next line
 		cryptcount = 0;
 		keycount = 0;
+
+		//Re-writing the file
+		fprintf(tempFILE, "%s\n", cryptedline);
 	}
 	fclose(tempFILE);
 	fclose(*FileToEncrypt);
@@ -66,18 +69,18 @@ void decryption(int nblines, FILE **FileToDecrypt) //Decrypt the file entered in
 
 		//Put the key and the line in the correct array
 		for(int i = 0; i < strlen(linetodecrypt) - 1; i++)
+		{
+			if(i % 2 == 0)
 			{
-				if(i % 2 == 0)
-				{
-					decryptedline[decryptcount] = linetodecrypt[i];
-					decryptcount++;
-				}
-				else
-				{
-					key[keycount] = linetodecrypt[i];
-					keycount++;
-				}
+				decryptedline[decryptcount] = linetodecrypt[i];
+				decryptcount++;
 			}
+			else
+			{
+				key[keycount] = linetodecrypt[i];
+				keycount++;
+			}
+		}
 
 		//Decryption of the line
 		for(int i = 0; i < strlen(decryptedline); i++)
@@ -89,9 +92,12 @@ void decryption(int nblines, FILE **FileToDecrypt) //Decrypt the file entered in
 			else
 				decryptedline[i] = decryptedline[i] - key[i];
 		}
-		fprintf(tempFILE, "%s\n", decryptedline);
+		//Resetting the counts for the next line
 		decryptcount = 0;
 		keycount = 0;
+
+		//Re-wrinting the file
+		fprintf(tempFILE, "%s\n", decryptedline);
 	}	
 	fclose(tempFILE);
 	fclose(*FileToDecrypt);

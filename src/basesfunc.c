@@ -22,8 +22,8 @@ int initcheck() //Try if the files exists, If not, that mean its the first time 
 void emptybuffer()
 {
 	int c = 0;
-	
-	while (c != '\n' && c != EOF);
+
+	while(c != '\n' && c != EOF)
 	{
 		c = getchar();
 	}

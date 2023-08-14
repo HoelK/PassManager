@@ -13,26 +13,13 @@ void main()
 	//Check if it's the first launch on the computer
 	firstinit = initcheck();
 
-<<<<<<< HEAD
 	//Create or Ask for the main password
-=======
-	//If not first init, decrypt masterpass file to read it
->>>>>>> 3ec982f086271eab10f8fcafa41f0d995ea1e188
 	if(!firstinit)
 	{
 		//Getting and asking the main password
 		char masterpass[27] = {0};
-		getmasterpass(masterpass);		
-		askmaster(masterpass);	
-
-		//Decrypting the files
-		nblines = countline();
-<<<<<<< HEAD
-		descFILE = fopen("UserData/desc.txt", "r");
-		passFILE = fopen("UserData/pass.txt", "r");
-
-		decryption(nblines, &passFILE, 1);
-		decryption(nblines, &descFILE, 2);
+		getmasterpass(masterpass);	
+		askmaster(masterpass);
 	}
 	else
 	{
@@ -42,38 +29,28 @@ void main()
 	}
 
 	//User Interface and Choices
-=======
-	
-		masterFILE = fopen("UserData/masterpass.txt", "r");
-
-		decryption(nblines, &masterFILE);
-		renameFILE(3);
-	}
-
-	masterpass(firstinit);
-
-	//If not the first launch : decrypt all files
-	if(!firstinit)
-	{
-		descFILE = fopen("UserData/desc.txt", "r");
-		passFILE = fopen("UserData/pass.txt", "r");
-
-		decryption(nblines, &passFILE);
-		renameFILE(1);
-		decryption(nblines, &descFILE);
-		renameFILE(2);
-	}
-
-	//User Interface
->>>>>>> 3ec982f086271eab10f8fcafa41f0d995ea1e188
 	do
 	{
+		nblines = countline();
 		usrchoice = choice();
 
 		switch(usrchoice)
 		{
 			case 1:
+				passFILE = fopen("UserData/pass.txt", "r");
+				descFILE = fopen("UserData/desc.txt", "r");
+				
+				decryption(nblines, &passFILE, 1);
+				decryption(nblines, &descFILE, 2);
+				
 				displaydata(nblines, &descFILE, &passFILE);
+
+				passFILE = fopen("UserData/pass.txt", "r");
+				descFILE = fopen("UserData/desc.txt", "r");
+				
+				encryption(nblines, &passFILE, 1);
+				encryption(nblines, &descFILE, 2);
+
 				break;
 			case 2:
 				newpass(&descFILE, &passFILE);
@@ -85,25 +62,6 @@ void main()
 				randompass(&descFILE, &passFILE);
 				break;
 		}
-		nblines = countline();
 
 	}while(usrchoice != 0);
-
-	//Encrypt all files before the shutdown
-	descFILE = fopen("UserData/desc.txt", "r");
-	passFILE = fopen("UserData/pass.txt", "r");
-<<<<<<< HEAD
-
-	encryption(nblines, &passFILE, 1);
-	encryption(nblines, &descFILE, 2);
-=======
-	masterFILE = fopen("UserData/masterpass.txt","r");
-
-	encryption(nblines, &passFILE);
-	renameFILE(1);	
-	encryption(nblines, &descFILE);
-	renameFILE(2);
-	encryption(nblines, &masterFILE);
-	renameFILE(3);
->>>>>>> 3ec982f086271eab10f8fcafa41f0d995ea1e188
 }

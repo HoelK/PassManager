@@ -1,10 +1,10 @@
 #include <stdio.h>
 #include <string.h>
-
 #include <stdlib.h>
 #include <time.h>
 
 #include "interactions.h"
+#include "cryption.h"
 #include "basesfunc.h"
 
 int choice() //Ask what the user want to do and return the choice
@@ -47,29 +47,30 @@ void displaydata(int nblines, FILE **descFILE, FILE **passFILE) //Show every pas
 		fgets(outputpass, 27, *passFILE);
 		printf("%25s", outputpass);
 	}
-
 	fclose(*passFILE);
 	fclose(*descFILE);
 }
 
 void newpass(FILE **descFILE, FILE **passFILE) //Add a password
 {
-	char input[27] = {0};
+	char desc[57] = {0}, pass[57] = {0};
 
 	//Adding the descrition in the file
 	printf("Enter a description site/email... (25 char max) : ");
-	fgets(input, 27, stdin);
+	fgets(desc, 27, stdin);
 
+	encryptline(desc);
 	*descFILE = fopen("UserData/desc.txt", "a");
-	fprintf(*descFILE, "%s", input);
+	fprintf(*descFILE, "%s\n", desc);
 	fclose(*descFILE);
 
 	//Adding the password in the file
 	printf("Entrer a password (25 char max): ");
-	fgets(input, 27, stdin);
+	fgets(pass, 27, stdin);
 
+	encryptline(pass);
 	*passFILE = fopen("UserData/pass.txt", "a");
-	fprintf(*passFILE, "%s", input);
+	fprintf(*passFILE, "%s\n", pass);
 	fclose(*passFILE);
 }
 
@@ -116,27 +117,29 @@ void deletepass(int nblines, FILE **descFILE, FILE **passFILE) //Delete a passwo
 void randompass(FILE **descFILE, FILE **passFILE) //Generate a random secured password
 {
 	srand(time(NULL));	//Set the seed and rand() to generate a random password
-	char input[27] = {0};
+	char desc[57] = {0}, pass[57] = {0};
 	char passcharlist[84] = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789%*/-+=;!?_(){}[]<>#~&@";
 
 	printf("Enter a description site/email... (25 char max) : ");
-	fgets(input, 27, stdin);
+	fgets(desc, 27, stdin);
 
+	encryptline(desc);
 	//Add the descrition in the file
 	*descFILE = fopen("UserData/desc.txt", "a");
-	fprintf(*descFILE, "%s", input);
+	fprintf(*descFILE, "%s\n", desc);
 	fclose(*descFILE);
 
-	//Put a random char from the passcharlist into each input case
+	//Put a random char from the passcharlist into each pass case
 	for(int i = 0; i != 25; i++)
 	{
-		input[i] = passcharlist[(rand() % 83 - 0 + 1) + 0];
+		pass[i] = passcharlist[(rand() % 83 - 0 + 1) + 0];
 	}
 
-	input[25] = '\n';
+	pass[25] = '\n';
 
+	encryptline(pass);
 	//Add the pass in the file
 	*passFILE = fopen("UserData/pass.txt", "a");
-	fprintf(*passFILE, "%s", input);
+	fprintf(*passFILE, "%s\n", pass);
 	fclose(*passFILE);
 }

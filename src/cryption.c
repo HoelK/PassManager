@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 #include <stdlib.h>
 #include <string.h>
 #include <time.h>
@@ -11,6 +12,16 @@ void encryption(int nblines, FILE **FileToEncrypt, int renamechoice) //Encrypt t
 	char key[30] = {0}, linetocrypt[30] = {0}, cryptedline[60] = {0};
 	char allchar[80] = "!#$%&()*+-./:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[]^_abcdefghijklmnopqrstuvwxyz{|}~";		
 
+=======
+void encryption(int nblines, FILE **FileToEncrypt) //Encrypt the file entered in parameter
+{
+	int cryptcount = 0, keycount = 0;
+	char key[30] = {0};
+	char linetocrypt[30] = {0};
+	char cryptedline[60] = {0};
+	char allchar[80] = "!#$%&()*+-./:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[]^_abcdefghijklmnopqrstuvwxyz{|}~";		
+	
+>>>>>>> 3ec982f086271eab10f8fcafa41f0d995ea1e188
 	FILE *tempFILE = fopen("UserData/temp.txt", "a");
 	srand(time(NULL));
 
@@ -19,7 +30,10 @@ void encryption(int nblines, FILE **FileToEncrypt, int renamechoice) //Encrypt t
 		//Get the line
 		fgets(linetocrypt, 30, *FileToEncrypt);
 
+<<<<<<< HEAD
 		//Encryption algorythm
+=======
+>>>>>>> 3ec982f086271eab10f8fcafa41f0d995ea1e188
 		for(int i = 0; i != strlen(linetocrypt) - 1; i++)
 		{
 			//Generate the key
@@ -48,6 +62,7 @@ void encryption(int nblines, FILE **FileToEncrypt, int renamechoice) //Encrypt t
 				keycount++;
 			}
 		}
+<<<<<<< HEAD
 
 		//Writing the crypted line in the file
 		fprintf(tempFILE, "%s\n", cryptedline);
@@ -58,6 +73,14 @@ void encryption(int nblines, FILE **FileToEncrypt, int renamechoice) //Encrypt t
 		emptyarray(key);
 		emptyarray(linetocrypt);
 		emptyarray(cryptedline);
+=======
+		//Resetting the counts for next line
+		cryptcount = 0;
+		keycount = 0;
+
+		//Re-writing the file
+		fprintf(tempFILE, "%s\n", cryptedline);
+>>>>>>> 3ec982f086271eab10f8fcafa41f0d995ea1e188
 	}
 	//Close and rename the files
 	fclose(tempFILE);
@@ -65,15 +88,25 @@ void encryption(int nblines, FILE **FileToEncrypt, int renamechoice) //Encrypt t
 	renameFILE(renamechoice);
 }
 
+<<<<<<< HEAD
 void decryption(int nblines, FILE **FileToDecrypt, int renamechoice) //Decrypt the file entered in parameter
 {
 	int decryptcount = 0, keycount = 0;
 	char key[30] = {0}, decryptedline[30] = {0}, linetodecrypt[60] = {0};
+=======
+void decryption(int nblines, FILE **FileToDecrypt) //Decrypt the file entered in parameter
+{
+	int decryptcount = 0, keycount = 0;
+	char key[30] = {0};
+	char decryptedline[30] = {0};
+	char linetodecrypt[60] = {0};
+>>>>>>> 3ec982f086271eab10f8fcafa41f0d995ea1e188
 
 	FILE *tempFILE = fopen("UserData/temp.txt", "a");
 
 	for(int i = 0; i < nblines; i++)
 	{
+<<<<<<< HEAD
 		//Get the line
 		fgets(linetodecrypt, 60, *FileToDecrypt);
 
@@ -112,6 +145,42 @@ void decryption(int nblines, FILE **FileToDecrypt, int renamechoice) //Decrypt t
 		emptyarray(key);
 		emptyarray(decryptedline);
 		emptyarray(linetodecrypt);
+=======
+		//Get the line and the key
+		fgets(linetodecrypt, 60, *FileToDecrypt);
+
+		//Put the key and the line in the correct array
+		for(int i = 0; i < strlen(linetodecrypt) - 1; i++)
+		{
+			if(i % 2 == 0)
+			{
+				decryptedline[decryptcount] = linetodecrypt[i];
+				decryptcount++;
+			}
+			else
+			{
+				key[keycount] = linetodecrypt[i];
+				keycount++;
+			}
+		}
+
+		//Decryption of the line
+		for(int i = 0; i < strlen(decryptedline); i++)
+		{
+			if(decryptedline[i] - key[i] < -60)
+				decryptedline[i] = decryptedline[i] - key[i] + 186;
+			else if(decryptedline[i] - key[i] < 33)
+				decryptedline[i] = decryptedline[i] - key[i] + 93;
+			else
+				decryptedline[i] = decryptedline[i] - key[i];
+		}
+		//Resetting the counts for the next line
+		decryptcount = 0;
+		keycount = 0;
+
+		//Re-wrinting the file
+		fprintf(tempFILE, "%s\n", decryptedline);
+>>>>>>> 3ec982f086271eab10f8fcafa41f0d995ea1e188
 	}	
 	//Close and rename the files
 	fclose(tempFILE);

@@ -1,33 +1,55 @@
-void masterpass(int firstinit) //Ask the password for acces the database
-{	
-	char masterpass[27] = {0}, masterinput[27] = {0};
-	FILE *masterFILE = NULL;
+#include <stdio.h>
+#include <string.h>
 
-	if(firstinit)
+#include <stdlib.h>
+#include <time.h>
+
+#include "interactions.h"
+#include "basesfunc.h"
+
+int choice() //Ask what the user want to do and return the choice
+{
+	int usrchoice = 0;
+
+	printf("Display your passwords................1\n");
+	printf("Add a password........................2\n");
+	printf("Delete a password.....................3\n");
+	printf("Generate a random secured password....4\n");
+	printf("Quit..................................0\n");
+
+	do
 	{
-		printf("Create your main password that will secure your database (25 char max) : ");
-		fgets(masterpass, 27, stdin);
+		printf("Choose an action : ");
+		scanf("%d", &usrchoice);
+		emptybuffer();
+	}while(usrchoice < 0 || usrchoice > 4);
 
-		masterFILE = fopen("UserData/masterpass.txt", "a+");
-		fprintf(masterFILE, "%s", masterpass);
-	}
-	else
+	return usrchoice;
+}
+
+void displaydata(int nblines, FILE **descFILE, FILE **passFILE) //Show every passwords
+{
+	char outputdesc[27] = {0};
+	char outputpass[27] = {0};
+
+	*descFILE = fopen("UserData/desc.txt", "r");
+	*passFILE = fopen("UserData/pass.txt", "r");
+	
+	printf("Description");
+	printf("\t\t\t\tPassword\n\n");
+
+	for (int i = 0; i < nblines; i++)
 	{
-		masterFILE = fopen("UserData/masterpass.txt", "r");
-		fgets(masterpass, 27, masterFILE);
+		fgets(outputdesc, 27, *descFILE);
+		outputdesc[strcspn(outputdesc, "\n")] = 0; //The line already has a \n and fgets add an extra one we need to delete
+		printf("%-25s    ", outputdesc);
 
-		//Password verification loop
-		while(strcmp(masterinput, masterpass) != 0) 
-		{
-			printf("Main password : ");
-			fgets(masterinput, 27, stdin);
-			masterinput[strlen(masterpass) + 1] = '\0';
-
-			if(strcmp(masterinput, masterpass) != 0)
-				printf("Error :Wrong password\n");
-		}
+		fgets(outputpass, 27, *passFILE);
+		printf("%25s", outputpass);
 	}
-	fclose(masterFILE);
+
+	fclose(*passFILE);
+	fclose(*descFILE);
 }
 
 void newpass(FILE **descFILE, FILE **passFILE) //Add a password

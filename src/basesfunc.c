@@ -1,32 +1,8 @@
-int initcheck() //Try if the files exists, If not, that mean its the first time launching the program
-{
-	FILE *testpFILE = fopen("UserData/pass.txt", "r");
+#include <stdio.h>
+#include <stddef.h>
+#include <string.h>
 
-	if(testpFILE == NULL)
-	{
-		testpFILE = fopen("UserData/pass.txt", "w+");
-		FILE *testdFILE = fopen("UserData/desc.txt", "w+");
-		
-		fclose(testpFILE);
-		fclose(testdFILE);
-
-		return 1;
-	}
-	else
-	{
-		fclose(testpFILE);
-		return 0;
-	}
-}
-
-void emptybuffer()
-{
-	int c = 0;
-	while (c != '\n' && c != EOF)
-	{
-		c = getchar();
-	}
-}
+#include "basesfunc.h"
 
 int countline() //Return the numbers of line in a file
 {
@@ -42,6 +18,45 @@ int countline() //Return the numbers of line in a file
 
 	fclose(descFILE);
 	return lines;
+}
+
+int initcheck() //Try if the files exists, If not, that mean its the first time launching the program
+{
+	FILE *firsttestFILE = fopen("UserData/pass.txt", "r");
+
+	if(firsttestFILE == NULL)
+	{
+		firsttestFILE = fopen("UserData/pass.txt", "w+");
+		FILE *secondtestFILE = fopen("UserData/desc.txt", "w+");
+		
+		fclose(firsttestFILE);
+		fclose(secondtestFILE);
+
+		return 1;
+	}
+	else
+	{
+		fclose(firsttestFILE);
+		return 0;
+	}
+}
+
+void emptybuffer() //Empty the buffer
+{
+	int c = 0;
+
+	while(c != '\n' && c != EOF)
+	{
+		c = getchar();
+	}
+}
+
+void emptyarray(char arraytoempty[]) //Empty the array entered in parameter (used in the encryption and decryption functions)
+{
+	for(int i = strlen(arraytoempty); i > 0; i--)
+	{
+		arraytoempty[i] = '\0';
+	}
 }
 
 void renameFILE(int filechoice) //Rename a specific file depending of the choice

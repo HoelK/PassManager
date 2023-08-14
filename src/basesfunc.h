@@ -1,6 +1,10 @@
-#include "basesfunc.c"
+#ifndef BASESFUNC_H
+#define BASESFUNC_H
 
+int countline();
 int initcheck();
 void emptybuffer();
-int countline();
+void emptyarray(char arraytoempty[]);
 void renameFILE(int filechoice);
+
+#endif

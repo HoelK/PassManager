@@ -1,12 +1,7 @@
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#include <time.h>
-
 #include "basesfunc.h"
-#include "passmanip.h"
-#include "display.h"
 #include "cryption.h"
+#include "interactions.h"
+#include "masterpass.h"
 
 void main()
 {
@@ -14,40 +9,34 @@ void main()
 	FILE *passFILE = NULL;
 	FILE *descFILE = NULL;
 	FILE *masterFILE = NULL;
-	FILE *keypassFILE = NULL;
-	FILE *keydescFILE = NULL;
-	FILE *keymasterFILE = NULL;
 
 	//Check if it's the first launch on the computer
 	firstinit = initcheck();
 
-	//If not the first launch : decrypt all files
+	//Create or Ask for the main password
 	if(!firstinit)
 	{
+		//Getting and asking the main password
+		char masterpass[27] = {0};
+		getmasterpass(masterpass);		
+		askmaster(masterpass);	
+
+		//Decrypting the files
 		nblines = countline();
-	
 		descFILE = fopen("UserData/desc.txt", "r");
 		passFILE = fopen("UserData/pass.txt", "r");
+
+		decryption(nblines, &passFILE, 1);
+		decryption(nblines, &descFILE, 2);
+	}
+	else
+	{
+		createmaster();
 		masterFILE = fopen("UserData/masterpass.txt", "r");
-		keydescFILE = fopen("UserData/keydesc.txt", "r");
-		keypassFILE = fopen("UserData/keypass.txt", "r");
-		keymasterFILE = fopen("UserData/keymaster.txt", "r");
-
-		decryption(nblines, &keypassFILE, &passFILE);
-		renameFILE(1);
-		decryption(nblines, &keydescFILE, &descFILE);
-		renameFILE(2);
-		decryption(nblines, &keymasterFILE, &masterFILE);
-		renameFILE(3);
-
-		remove("UserData/keydesc.txt");
-		remove("UserData/keypass.txt");
-		remove("UserData/keymaster.txt");
+		encryption(1, &masterFILE, 3);
 	}
 
-	masterpass(firstinit);
-
-	//User Interface
+	//User Interface and Choices
 	do
 	{
 		usrchoice = choice();
@@ -71,18 +60,10 @@ void main()
 
 	}while(usrchoice != 0);
 
-	//Encrypt all files before shutdown
+	//Encrypt all files before the shutdown
 	descFILE = fopen("UserData/desc.txt", "r");
 	passFILE = fopen("UserData/pass.txt", "r");
-	masterFILE = fopen("UserData/masterpass.txt","r");
-	keydescFILE = fopen("UserData/keydesc.txt", "a+");
-	keypassFILE = fopen("UserData/keypass.txt", "a+");
-	keymasterFILE = fopen("UserData/keymaster.txt", "a+");
 
-	encryption(nblines, &keypassFILE, &passFILE);
-	renameFILE(1);	
-	encryption(nblines, &keydescFILE, &descFILE);
-	renameFILE(2);
-	encryption(nblines, &keymasterFILE, &masterFILE);
-	renameFILE(3);
+	encryption(nblines, &passFILE, 1);
+	encryption(nblines, &descFILE, 2);
 }

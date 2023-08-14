@@ -1,4 +1,9 @@
-#include "cryption.c"
+#ifndef CRYPTION_H
+#define CRYPTION_H
 
-void encryption(int nblines, FILE **keyFILE, FILE **FileToEncrypt);
-void decryption(int nblines, FILE **keyFILE, FILE **FileToDecrypt);
+#include <stdio.h>
+
+void encryption(int nblines,FILE **FileToEncrypt, int renamechoice);
+void decryption(int nblines,FILE **FileToDecrypt, int renamechoice);
+
+#endif

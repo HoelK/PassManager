@@ -4,7 +4,7 @@
 
 #include "basesfunc.h"
 
-int countline() //Return the numbers of line in a file
+int countline()
 {
 	int c = 0, lines = 0;
 	FILE *descFILE = fopen("UserData/desc.txt", "r");
@@ -20,7 +20,7 @@ int countline() //Return the numbers of line in a file
 	return lines;
 }
 
-int initcheck() //Try if the files exists, If not, that mean its the first time launching the program
+int initcheck()
 {
 	FILE *firsttestFILE = fopen("UserData/pass.txt", "r");
 
@@ -41,7 +41,7 @@ int initcheck() //Try if the files exists, If not, that mean its the first time 
 	}
 }
 
-void emptybuffer() //Empty the buffer
+void emptybuffer()
 {
 	int c = 0;
 
@@ -51,7 +51,7 @@ void emptybuffer() //Empty the buffer
 	}
 }
 
-void emptyarray(char arraytoempty[]) //Empty the array entered in parameter (used in the encryption and decryption functions)
+void emptyarray(char arraytoempty[])
 {
 	for(int i = strlen(arraytoempty); i > 0; i--)
 	{
@@ -59,7 +59,7 @@ void emptyarray(char arraytoempty[]) //Empty the array entered in parameter (use
 	}
 }
 
-void renameFILE(int filechoice) //Rename a specific file depending of the choice
+void renameFILE(int filechoice)
 {
 	switch(filechoice)
 	{

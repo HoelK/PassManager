@@ -5,20 +5,17 @@
 
 void main()
 {
-	int firstinit = 0, nblines = 0, usrchoice = 0;
+	char masterpass[27] = {0}; 						//Array that will get the masterpass
+	int firstinit = 0, nblines = 0, usrchoice = 0;	//firstinit is the result of initcheck
 	FILE *passFILE = NULL;
 	FILE *descFILE = NULL;
 	FILE *masterFILE = NULL;
 
-	//Check if it's the first launch on the computer
-	firstinit = initcheck();
+	firstinit = initcheck(); 	//Get the result of initcheck into a int
 
-	//Create or Ask for the main password
-	if(!firstinit)
+	if(!firstinit)				//Create or Ask the masterpass depending of firstinit
 	{
-		//Getting and asking the main password
-		char masterpass[27] = {0};
-		getmasterpass(masterpass);	
+		getmasterpass(masterpass);
 		askmaster(masterpass);
 	}
 	else
@@ -28,18 +25,16 @@ void main()
 		encryption(1, &masterFILE, 3);
 	}
 
-	//User Interface and Choices
-	do
+	do								//User Interface and Choices
 	{
-		nblines = countline();
-		usrchoice = choice();
+		nblines = countline();		//Get the numbers of line to get any change after an action
+		usrchoice = choice();		//Get the choice of the user
 
 		switch(usrchoice)
 		{
 			case 1:
 				passFILE = fopen("UserData/pass.txt", "r");
 				descFILE = fopen("UserData/desc.txt", "r");
-				
 				decryption(nblines, &passFILE, 1);
 				decryption(nblines, &descFILE, 2);
 				
@@ -47,7 +42,6 @@ void main()
 
 				passFILE = fopen("UserData/pass.txt", "r");
 				descFILE = fopen("UserData/desc.txt", "r");
-				
 				encryption(nblines, &passFILE, 1);
 				encryption(nblines, &descFILE, 2);
 
@@ -62,6 +56,5 @@ void main()
 				randompass(&descFILE, &passFILE);
 				break;
 		}
-
 	}while(usrchoice != 0);
 }

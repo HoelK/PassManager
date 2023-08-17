@@ -7,16 +7,18 @@
 #include "cryption.h"
 #include "basesfunc.h"
 
-int choice() //Ask what the user want to do and return the choice
+int choice()
 {
 	int usrchoice = 0;
 
+	//Display
 	printf("Display your passwords................1\n");
 	printf("Add a password........................2\n");
 	printf("Delete a password.....................3\n");
 	printf("Generate a random secured password....4\n");
 	printf("Quit..................................0\n");
 
+	//Ask the action
 	do
 	{
 		printf("Choose an action : ");
@@ -27,7 +29,7 @@ int choice() //Ask what the user want to do and return the choice
 	return usrchoice;
 }
 
-void displaydata(int nblines, FILE **descFILE, FILE **passFILE) //Show every passwords
+void displaydata(int nblines, FILE **descFILE, FILE **passFILE)
 {
 	char outputdesc[27] = {0};
 	char outputpass[27] = {0};
@@ -51,20 +53,21 @@ void displaydata(int nblines, FILE **descFILE, FILE **passFILE) //Show every pas
 	fclose(*descFILE);
 }
 
-void newpass(FILE **descFILE, FILE **passFILE) //Add a password
+void newpass(FILE **descFILE, FILE **passFILE)
 {
 	char desc[57] = {0}, pass[57] = {0};
 
-	//Adding the descrition in the file
+	//Asking the description
 	printf("Enter a description site/email... (25 char max) : ");
 	fgets(desc, 27, stdin);
 
+	//Encrypt it and put it into the file
 	encryptline(desc);
 	*descFILE = fopen("UserData/desc.txt", "a");
 	fprintf(*descFILE, "%s\n", desc);
 	fclose(*descFILE);
 
-	//Adding the password in the file
+	//Same with the password
 	printf("Entrer a password (25 char max): ");
 	fgets(pass, 27, stdin);
 
@@ -74,7 +77,7 @@ void newpass(FILE **descFILE, FILE **passFILE) //Add a password
 	fclose(*passFILE);
 }
 
-void deletepass(int nblines, FILE **descFILE, FILE **passFILE) //Delete a password
+void deletepass(int nblines, FILE **descFILE, FILE **passFILE)
 {
 	int line = 1, deleteline= 0;
 	char descLine[27] = {0}, passLine[27] = {0};
@@ -108,13 +111,11 @@ void deletepass(int nblines, FILE **descFILE, FILE **passFILE) //Delete a passwo
 	fclose(*passFILE);
 	fclose(tempDesc);
 	fclose(tempPass);
-	remove("UserData/desc.txt");
-	remove("UserData/pass.txt");
-	rename("UserData/tempdesc.txt", "UserData/desc.txt");
-	rename("UserData/temppass.txt", "UserData/pass.txt");
+	renameFILE(1);
+	renameFILE(2);
 }
 
-void randompass(FILE **descFILE, FILE **passFILE) //Generate a random secured password
+void randompass(FILE **descFILE, FILE **passFILE)
 {
 	srand(time(NULL));	//Set the seed and rand() to generate a random password
 	char desc[57] = {0}, pass[57] = {0};
@@ -122,8 +123,8 @@ void randompass(FILE **descFILE, FILE **passFILE) //Generate a random secured pa
 
 	printf("Enter a description site/email... (25 char max) : ");
 	fgets(desc, 27, stdin);
-
 	encryptline(desc);
+
 	//Add the descrition in the file
 	*descFILE = fopen("UserData/desc.txt", "a");
 	fprintf(*descFILE, "%s\n", desc);
@@ -136,8 +137,8 @@ void randompass(FILE **descFILE, FILE **passFILE) //Generate a random secured pa
 	}
 
 	pass[25] = '\n';
-
 	encryptline(pass);
+
 	//Add the pass in the file
 	*passFILE = fopen("UserData/pass.txt", "a");
 	fprintf(*passFILE, "%s\n", pass);

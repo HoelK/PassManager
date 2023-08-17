@@ -5,11 +5,10 @@
 #include "cryption.h"
 #include "basesfunc.h"
 
-void encryption(int nblines, FILE **FileToEncrypt, int renamechoice) //Encrypt the file entered in parameter
+void encryption(int nblines, FILE **FileToEncrypt, int renamechoice)
 {
 	int cryptcount = 0, keycount = 0;
 	char key[27] = {0}, linetocrypt[27] = {0}, cryptedline[57] = {0};
-	char allchar[79] = "!#$%&()*+-.:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[]^_abcdefghijklmnopqrstuvwxyz{|}~";		
 
 	FILE *tempFILE = fopen("UserData/temp.txt", "a");
 	srand(time(NULL));
@@ -23,13 +22,13 @@ void encryption(int nblines, FILE **FileToEncrypt, int renamechoice) //Encrypt t
 		for(int i = 0; i != strlen(linetocrypt) - 1; i++)
 		{
 			//Generate the key
-			key[i] = allchar[(rand() % 78 + 1)];
+			key[i] = (rand() % (126 - 33 + 1)) + 33;
 
 			//Encryption of the line 
-			if(key[i] + linetocrypt[i] > 219)
-				linetocrypt[i] = (key[i] + linetocrypt[i]) - 186;
+			if(key[i] + linetocrypt[i] > 220)
+				linetocrypt[i] = (key[i] + linetocrypt[i]) - 188;
 			else if(key[i] + linetocrypt[i] > 126)
-				linetocrypt[i] = (key[i] + linetocrypt[i]) - 93;			
+				linetocrypt[i] = (key[i] + linetocrypt[i]) - 94;			
 			else
 				linetocrypt[i] = key[i] + linetocrypt[i];
 		}
@@ -48,7 +47,6 @@ void encryption(int nblines, FILE **FileToEncrypt, int renamechoice) //Encrypt t
 				keycount++;
 			}
 		}
-
 		//Writing the crypted line in the file
 		fprintf(tempFILE, "%s\n", cryptedline);
 
@@ -65,7 +63,7 @@ void encryption(int nblines, FILE **FileToEncrypt, int renamechoice) //Encrypt t
 	renameFILE(renamechoice);
 }
 
-void decryption(int nblines, FILE **FileToDecrypt, int renamechoice) //Decrypt the file entered in parameter
+void decryption(int nblines, FILE **FileToDecrypt, int renamechoice)
 {
 	int decryptcount = 0, keycount = 0;
 	char key[27] = {0}, decryptedline[27] = {0}, linetodecrypt[57] = {0};
@@ -95,10 +93,10 @@ void decryption(int nblines, FILE **FileToDecrypt, int renamechoice) //Decrypt t
 		//Decryption of the line
 		for(int i = 0; i < strlen(decryptedline); i++)
 		{
-			if(decryptedline[i] - key[i] < -60)
-				decryptedline[i] = decryptedline[i] - key[i] + 186;
+			if(decryptedline[i] - key[i] < -61)
+				decryptedline[i] = decryptedline[i] - key[i] + 188;
 			else if(decryptedline[i] - key[i] < 33)
-				decryptedline[i] = decryptedline[i] - key[i] + 93;
+				decryptedline[i] = decryptedline[i] - key[i] + 94;
 			else
 				decryptedline[i] = decryptedline[i] - key[i];
 		}
@@ -123,24 +121,23 @@ void encryptline(char cryptedline[])
 {
 	int cryptcount = 0, keycount = 0;
 	char key[30] = {0}, linetocrypt[30] = {0};
-	char allchar[80] = "!#$%&()*+-./:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[]^_abcdefghijklmnopqrstuvwxyz{|}~";		
 	srand(time(NULL));
 	
 	for(int i = 0; i != 26; i++)
 	{
 		linetocrypt[i] = cryptedline[i];
 	}
-	
+
 	//Encryption algorythm
 	for(int i = 0; i != strlen(linetocrypt) - 1; i++)
 	{
-		key[i] = allchar[(rand() % 79 + 1)];
+		key[i] = (rand() % (126 - 33 + 1)) + 33;
 
 		//Encryption of the line 
-		if(key[i] + linetocrypt[i] > 219)
-			linetocrypt[i] = (key[i] + linetocrypt[i]) - 186;
+		if(key[i] + linetocrypt[i] > 220)
+			linetocrypt[i] = (key[i] + linetocrypt[i]) - 188;
 		else if(key[i] + linetocrypt[i] > 126)
-			linetocrypt[i] = (key[i] + linetocrypt[i]) - 93;			
+			linetocrypt[i] = (key[i] + linetocrypt[i]) - 94;			
 		else
 			linetocrypt[i] = key[i] + linetocrypt[i];
 	}

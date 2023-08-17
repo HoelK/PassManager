@@ -5,7 +5,7 @@
 #include "masterpass.h"
 #include "cryption.h"
 
-void getmasterpass(char masterpass[]) //Get the masterpass into and array
+void getmasterpass(char masterpass[])
 {
 	FILE *decryptmasterFILE = NULL;
 	FILE *encryptmasterFILE = NULL;
@@ -16,14 +16,15 @@ void getmasterpass(char masterpass[]) //Get the masterpass into and array
 
 	getmasterFILE = fopen("UserData/masterpass.txt", "r");
 	fgets(masterpass, 27, getmasterFILE);
+	printf("%s", masterpass);
 
 	encryptmasterFILE = fopen("UserData/masterpass.txt", "r");
 	encryption(1, &encryptmasterFILE, 3);
 }
 
-void askmaster(char masterpass[]) //Ask the masterpass to the user
+void askmaster(char masterpass[])
 {
-	//Array that will contain respectively the pass and the user input
+	//Array that will contain the pass
 	char masterinput[27] = {0};
 
 	//Password verification loop
@@ -38,12 +39,12 @@ void askmaster(char masterpass[]) //Ask the masterpass to the user
 	}while(strcmp(masterinput, masterpass) != 0);
 }
 
-void createmaster() //Ask the user to create the masterpass
+void createmaster()
 {
 	//Array that will contain the new pass
 	char masterpass[27];
 
-	//Ask the password
+	//Ask the password then encrypt it
 	printf("Create your main password that will secure your database (25 char max) : ");
 	fgets(masterpass, 27, stdin);
 

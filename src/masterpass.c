@@ -16,6 +16,7 @@ void getmasterpass(char masterpass[])
 
 	getmasterFILE = fopen("UserData/masterpass.txt", "r");
 	fgets(masterpass, 27, getmasterFILE);
+	fclose(getmasterFILE);
 
 	encryptmasterFILE = fopen("UserData/masterpass.txt", "r");
 	encryption(1, &encryptmasterFILE, 3);
